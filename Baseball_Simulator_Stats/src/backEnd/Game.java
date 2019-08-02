@@ -14,10 +14,15 @@ public class Game implements Serializable{
 	private String stadium;
 	private String hora;
 	private String date;
+	private BoxScore datosBoxScore;
 	
 	private boolean finished = false;
 	private int homeRun = 0;
 	private int awayRun = 0;
+	private int hitsHome = 0;
+	private int hitsAway = 0;
+	private int erroresHome = 0;
+	private int erroresAway = 0;
 	
 	/* Constructor */
 	
@@ -26,13 +31,71 @@ public class Game implements Serializable{
 		this.homeTeam = homeTeam;
 		this.awayTeam = awayTeam;
 		this.stadium = stadium;
+		homeRun = 0;
+		awayRun = 0;
+		finished = false;
 	//	this.hora = hora;
 	//	this.date = date;
 	}
 	
 	
 	
-	
+	public BoxScore getDatosBoxScore() {
+		return datosBoxScore;
+	}
+
+
+
+	public void setDatosBoxScore(BoxScore datosBoxScore) {
+		this.datosBoxScore = datosBoxScore;
+	}
+
+
+
+	public int getHitsHome() {
+		return hitsHome;
+	}
+
+	public int getHitsAway() {
+		return hitsAway;
+	}
+
+	public int getErroresHome() {
+		return erroresHome;
+	}
+
+	public int getErroresAway() {
+		return erroresAway;
+	}
+
+	public void setHitsHome(int hitsHome) {
+		this.hitsHome = hitsHome;
+	}
+
+
+
+
+	public void setHitsAway(int hitsAway) {
+		this.hitsAway = hitsAway;
+	}
+
+
+
+
+	public void setErroresHome(int erroresHome) {
+		this.erroresHome = erroresHome;
+	}
+
+
+
+
+	public void setErroresAway(int erroresAway) {
+		this.erroresAway = erroresAway;
+	}
+
+
+
+
 	public boolean isFinished() {
 		return finished;
 	}

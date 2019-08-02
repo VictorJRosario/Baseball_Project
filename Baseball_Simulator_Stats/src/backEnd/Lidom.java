@@ -17,7 +17,7 @@ import java.util.ArrayList;
  *              Arnold Lantigua
  *              Victor Rosario
  *
- *              Controller Class - LIDOM (Liga de Béisbol Profesional de República Dominicana)
+ *              Controller Class - LIDOM (Liga de Bï¿½isbol Profesional de Repï¿½blica Dominicana)
  */
 
 
@@ -143,6 +143,23 @@ public class Lidom implements Serializable {
 		listGame.remove(game);
 		//	generateIdGame--;
 	}
+	
+	public void updateGame(Game myGame) {
+		int index = searchIndexGame(myGame.getHomeTeam(), myGame.getAwayTeam(), myGame.getStadium(), myGame.getDate(), myGame.getHora());
+		listGame.remove(index);
+		listGame.add(index, myGame);
+
+	}
+	
+	public void updatePlayer(Player myPlayercode) {
+		
+		int index = searchIndexPlayerByID(myPlayercode.getId());
+		listPlayer.remove(index);
+		listPlayer.add(index, myPlayercode);
+
+	}
+	
+
 
 	/**************************************************************/
 
@@ -177,6 +194,22 @@ public class Lidom implements Serializable {
 
 		while (!found && i < listPlayer.size()) {
 			if(listPlayer.get(i).getName().equalsIgnoreCase(namePlayer)) {
+				found = true;
+				auxPlayer = listPlayer.get(i);
+			}
+			i++;
+		}
+		return auxPlayer; //Retorna el JUGADOR del NOMBRE encontrado.
+	}
+	
+	public Player searchPlayerByNameByTeam(String namePlayer, String lastname, String nameTeam) {
+		Player auxPlayer = null;
+		boolean found = false;
+		int i = 0;
+
+		while (!found && i < listPlayer.size()) {
+			if(listPlayer.get(i).getName().equalsIgnoreCase(namePlayer) && listPlayer.get(i).getLastname().equalsIgnoreCase(lastname)
+					&& listPlayer.get(i).getTeamName().equalsIgnoreCase(nameTeam)) {
 				found = true;
 				auxPlayer = listPlayer.get(i);
 			}
@@ -249,6 +282,37 @@ public class Lidom implements Serializable {
 		return auxStadium; //Retorna el ESTADIO del NOMBRE encontrado.
 	}
 
+	public int searchIndexGame(String local, String visitante, String estadio, String fecha, String hora) {
+		int auxGame = -1;
+		boolean found = false;
+		int i = 0;
+
+		while (!found &&  i < listGame.size()) {
+			if (listGame.get(i).getHomeTeam().equalsIgnoreCase(local) && listGame.get(i).getAwayTeam().equalsIgnoreCase(visitante) && listGame.get(i).getDate().equalsIgnoreCase(fecha) && listGame.get(i).getHora().equalsIgnoreCase(hora)) {
+				found = true;
+				auxGame = i;
+			}
+			i++;
+		}
+		return auxGame; //retornar el index del juego encontrado
+	}
+	
+	//Search Player by ID.
+	public int searchIndexPlayerByID(String idPlayer) {
+		int  auxPlayer = -1;
+		boolean found = false;
+		int i = 0;
+
+		while (!found && i < listPlayer.size()) {
+			if(listPlayer.get(i).getId().equalsIgnoreCase(idPlayer)) {
+				found = true;
+				auxPlayer = i;;
+			}
+			i++;
+		}
+		return auxPlayer; //Retorna el Index del JUGADOR del ID encontrado.
+	}
+	
 	public Game searchGame(String local, String visitante, String estadio, String fecha, String hora) {
 		Game auxGame = null;
 		boolean found = false;
@@ -470,8 +534,9 @@ public class Lidom implements Serializable {
 	
 	//esta funcion es para calcular el porcentage de victorias de los equipos
 	public float TeamAvr(int win, int game) {
-		
-		return win/game;
+		float w = win;
+        float g = game;
+		return (float) (w/g);
 		
 	}
 
@@ -479,6 +544,11 @@ public class Lidom implements Serializable {
 	public void addPlayerToTeam(String nameTeam, Player player) {
 		Team auxTeam = searchTeamByName(nameTeam); //Buscar el equipo correspondiente.
 		auxTeam.addPlayerRoster(player);
+	}
+	
+	public void deletePlayerToTeam(String nameTeam, Player player) {
+		Team auxTeam = searchTeamByName(nameTeam); //Buscar el equipo correspondiente.
+		auxTeam.deletePlayerRoster(player);
 	}
 
 	public Boolean checkIdPlayer(String myPlayerId) {
@@ -532,6 +602,8 @@ public class Lidom implements Serializable {
 
 		return Mejor_Team;
 	}
+	
+
 
 
 
@@ -672,5 +744,22 @@ public class Lidom implements Serializable {
 
 	}
 
+	public ArrayList<Player> Filtrar_Equipo(String team) {
 
+		ArrayList<Player> TeamFiltered = new ArrayList<Player>();
+
+		if (team.equals("Todos")) {
+			//			System.out.println(listPlayer);
+			return listPlayer;
+		}
+
+		for (Player player : listPlayer) {
+			if (team.equals(player.getTeamName())) {
+				TeamFiltered.add(player);
+			}
+		}
+		//		System.out.println(TeamFiltered);
+		return TeamFiltered;
+
+	}
 }

@@ -32,8 +32,13 @@ import backEnd.Stadium;
 import backEnd.Team;
 import javax.swing.border.LineBorder;
 
+@SuppressWarnings("unused")
 public class AddInjury extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6513879443446468932L;
 	/**
 	 * 
 	 */
@@ -48,8 +53,10 @@ public class AddInjury extends JDialog {
 
 	private JButton btnRegistrar;
 	private JButton btnCancelar;
+	@SuppressWarnings("rawtypes")
 	private JComboBox cbxTipoLesion;
 	private JLabel lblHora;
+	@SuppressWarnings("rawtypes")
 	private JComboBox cbxJugadoresLesion;
 	private JLabel lblJugadores;
 	private JLabel lblTeamLesion;
@@ -62,6 +69,7 @@ public class AddInjury extends JDialog {
 	 * Create the dialog.
 	 */
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public AddInjury(Team auxTeam, Boolean quitar) {
 
 
@@ -234,8 +242,8 @@ public class AddInjury extends JDialog {
 				cbxTipoLesion.setEnabled(false);
 
 			}
-			cbxTipoLesion.setModel(new DefaultComboBoxModel(new String[] {"<Seleccionar>"," Lesiones musculares", "Fracturas", " Ampollas","Rotura fibrilar o desgarro muscular",
-					"Esguinces","Lesiones o desgarros del ligamento colateral medial (LCM) del codo"}));
+			cbxTipoLesion.setModel(new DefaultComboBoxModel(new String[] {"<Seleccionar>","Lesiones musculares", "Fracturas", "Ampollas","Desgarro muscular",
+					"Esguinces","Lesion de codo"}));
 			cbxTipoLesion.setSelectedIndex(0);
 			cbxTipoLesion.setFont(new Font("Consolas", Font.PLAIN, 18));
 			cbxTipoLesion.setBounds(358, 224, 270, 30);
@@ -276,6 +284,7 @@ public class AddInjury extends JDialog {
 			dateChooser = new RSDateChooser();
 			if (quitar) {
 				dateChooser.setEnabled(false);
+				dateChooser.setFocusable(false);
 
 			}
 			dateChooser.setPlaceholder("");
@@ -304,6 +313,7 @@ public class AddInjury extends JDialog {
 	}
 
 	/** Metodos **/
+	@SuppressWarnings("unchecked")
 	private void loadcombobox(Team auxTeam, Boolean quitar) {
 		for (int i = 0; i < auxTeam.getRosterPlayers().size(); i++) {
 			if (quitar) {

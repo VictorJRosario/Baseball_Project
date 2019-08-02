@@ -32,7 +32,7 @@ public class AddGame extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 8867271004002977275L;
-	
+
 	private final JPanel contentPanel = new JPanel();
 	private JSeparator separator;
 	private JLabel lblRegistroEquipo;
@@ -43,21 +43,27 @@ public class AddGame extends JDialog {
 
 	private JButton btnRegistrar;
 	private JButton btnCancelar;
+	@SuppressWarnings("rawtypes")
 	private JComboBox cbxEquipoLocal;
+	@SuppressWarnings("rawtypes")
 	private JComboBox cbxEquipoVisitante;
 	private RSDateChooser dateChooser;
 	private JLabel lblFecha;
+	@SuppressWarnings("rawtypes")
 	private JComboBox cbxHora;
 	private JLabel lblHora;
+	@SuppressWarnings("rawtypes")
 	private JComboBox cbxEstadio;
 	private JLabel lblEstadio;
-
+	private static Game myGame;
 
 	/**
 	 * Create the dialog.
 	 */
 
-	public AddGame() {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public AddGame(Game game) {
+
 
 		getContentPane().setBackground(new Color(255, 255, 255));
 		setUndecorated(true);
@@ -88,9 +94,9 @@ public class AddGame extends JDialog {
 			panelHeader.setBounds(0, 0, 687, 45);
 			panelBg.add(panelHeader);
 
-			lblRegistroEquipo = new JLabel("REGISTRO PARTIDO");
+			lblRegistroEquipo = new JLabel("MODIFICACION PARTIDO");
 			lblRegistroEquipo.setHorizontalTextPosition(SwingConstants.CENTER);
-			lblRegistroEquipo.setBounds(244, 0, 192, 45);
+			lblRegistroEquipo.setBounds(206, 0, 261, 45);
 			panelHeader.add(lblRegistroEquipo);
 			lblRegistroEquipo.setHorizontalAlignment(SwingConstants.CENTER);
 			lblRegistroEquipo.setForeground(new Color(255, 255, 255));
@@ -125,44 +131,69 @@ public class AddGame extends JDialog {
 			lblNmeroUniforme.setBounds(403, 107, 225, 31);
 			panelBg.add(lblNmeroUniforme);
 
-			btnRegistrar = new JButton("Registrar");
+			btnRegistrar = new JButton("Modificar");
 			btnRegistrar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-				//	Lidom.getInstance().getListGame().removeAll(Lidom.getInstance().getListGame());
+					//	Lidom.getInstance().getListGame().removeAll(Lidom.getInstance().getListGame());
 					Locale spanishLocale = new Locale("es", "ES");
 					SimpleDateFormat formatter = new SimpleDateFormat("dd-MMMM-yyyy", spanishLocale);
-					
+
 					String teamHome = cbxEquipoLocal.getSelectedItem().toString();
 					String teamAway = cbxEquipoVisitante.getSelectedItem().toString();
 					String hour = cbxHora.getSelectedItem().toString();
 					String estadio = cbxEstadio.getSelectedItem().toString();
 					Date dateGame = dateChooser.getDatoFecha();
-					
-					
-				
-					if ((cbxEquipoLocal.getSelectedIndex() > 0) && (cbxEquipoVisitante.getSelectedIndex() > 0) && (cbxHora.getSelectedIndex() > 0) && (cbxEstadio.getSelectedIndex() > 0) && (dateGame != null)) {
-						if (teamHome.equalsIgnoreCase(teamAway)) {
-							ImageIcon icon = new ImageIcon(getClass().getResource("/iconos_imagenes/icons8_cancel_2_48px_1.png"));
-							String[] options = {"Ok"};	
-							JOptionPane.showOptionDialog(null, "Un equipo no puede ser local y visitante simultaneamente!", "Aviso!", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options);	
-						}else {
-							String dateGameString = formatter.format(dateGame);
-						//	Game newgame = new Game(teamHome, teamAway, estadio, hour, dateGameString);
-						//	Lidom.getInstance().addGame(newgame);
-							
 
-							ImageIcon icon = new ImageIcon(getClass().getResource("/iconos_imagenes/icons8_checked_48px_1.png"));
-							String[] options = {"Ok"};	
-							JOptionPane.showOptionDialog(null, "Registro con exito!", "Aviso!", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options);
-							clean();
-							Home.loadGameToday();
-						}
+
+					//				if (myGame == null) {
+					//					
+					//				
+					//					if ((cbxEquipoLocal.getSelectedIndex() > 0) && (cbxEquipoVisitante.getSelectedIndex() > 0) && (cbxHora.getSelectedIndex() > 0) && (cbxEstadio.getSelectedIndex() > 0) && (dateGame != null)) {
+					//						if (teamHome.equalsIgnoreCase(teamAway)) {
+					//							ImageIcon icon = new ImageIcon(getClass().getResource("/iconos_imagenes/icons8_cancel_2_48px_1.png"));
+					//							String[] options = {"Ok"};	
+					//							JOptionPane.showOptionDialog(null, "Un equipo no puede ser local y visitante simultaneamente!", "Aviso!", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options);	
+					//						}else {
+					//							String dateGameString = formatter.format(dateGame);
+					//						//	Game newgame = new Game(teamHome, teamAway, estadio, hour, dateGameString);
+					//						//	Lidom.getInstance().addGame(newgame);
+					//							
+					//
+					//							ImageIcon icon = new ImageIcon(getClass().getResource("/iconos_imagenes/icons8_checked_48px_1.png"));
+					//							String[] options = {"Ok"};	
+					//							JOptionPane.showOptionDialog(null, "Registro con exito!", "Aviso!", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options);
+					//							clean();
+					//							Home.loadGameToday();
+					//						}
+					//					}
+					//					else {
+					//						ImageIcon icon = new ImageIcon(getClass().getResource("/iconos_imagenes/icons8_cancel_2_48px_1.png"));
+					//						String[] options = {"Ok"};	
+					//						JOptionPane.showOptionDialog(null, "Complete todos los campos, correctamente!", "Aviso!", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options);
+					//					}
+					//				}else {
+					/*MODIFICAR*/
+					String dateGameString = formatter.format(dateGame);
+					if (cbxHora.getSelectedIndex() > 0 && dateGameString != null) {
+						myGame.setAwayTeam(teamAway);
+						myGame.setHomeTeam(teamHome);
+						myGame.setDate(dateGameString);
+						myGame.setHora(hour);
+						myGame.setStadium(estadio);
+						Lidom.getInstance().updateGame(myGame);
+						JOptionPane.showMessageDialog(null, "Modificado con exito!", "Alerta - Hecho!", JOptionPane.INFORMATION_MESSAGE);
+						dispose();
+						ViewGame.loadTableGame();
+						Home.loadGameToday();
+
 					}
 					else {
 						ImageIcon icon = new ImageIcon(getClass().getResource("/iconos_imagenes/icons8_cancel_2_48px_1.png"));
 						String[] options = {"Ok"};	
 						JOptionPane.showOptionDialog(null, "Complete todos los campos, correctamente!", "Aviso!", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options);
 					}
+
+
 				}
 			});
 			btnRegistrar.setIcon(new ImageIcon(AddPlayer.class.getResource("/iconos_imagenes/icons8_baseball_24px.png")));
@@ -197,17 +228,19 @@ public class AddGame extends JDialog {
 			btnCancelar.setBackground(new Color(0, 30, 70));
 			btnCancelar.setBounds(482, 352, 146, 30);
 			panelBg.add(btnCancelar);
-			
+
 			cbxEquipoLocal = new JComboBox<String>();
+			cbxEquipoLocal.setEnabled(false);
 			cbxEquipoLocal.setFont(new Font("Consolas", Font.PLAIN, 18));
 			cbxEquipoLocal.setBounds(55, 143, 225, 30);
 			panelBg.add(cbxEquipoLocal);
-			
+
 			cbxEquipoVisitante = new JComboBox();
+			cbxEquipoVisitante.setEnabled(false);
 			cbxEquipoVisitante.setFont(new Font("Consolas", Font.PLAIN, 18));
 			cbxEquipoVisitante.setBounds(403, 143, 225, 30);
 			panelBg.add(cbxEquipoVisitante);
-			
+
 			dateChooser = new RSDateChooser();
 			dateChooser.setPlaceholder("");
 			dateChooser.setFuente(new Font("Consolas", Font.PLAIN, 18));
@@ -216,7 +249,7 @@ public class AddGame extends JDialog {
 			dateChooser.setColorBackground(new Color(0, 30, 72));
 			dateChooser.setBounds(55, 224, 225, 30);
 			panelBg.add(dateChooser);
-			
+
 			lblFecha = new JLabel("Fecha");
 			lblFecha.setVerticalTextPosition(SwingConstants.BOTTOM);
 			lblFecha.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -225,7 +258,7 @@ public class AddGame extends JDialog {
 			lblFecha.setFont(new Font("Consolas", Font.PLAIN, 20));
 			lblFecha.setBounds(55, 191, 238, 31);
 			panelBg.add(lblFecha);
-			
+
 			cbxHora = new JComboBox();
 			cbxHora.setModel(new DefaultComboBoxModel(new String[] {"<Seleccionar>","8:00 AM","8:30 AM", "9:00 AM","9:30 AM", "10:00 AM","10:30 AM",
 					"11:00 AM","11:30 AM", "12:00 PM","12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM",
@@ -235,7 +268,7 @@ public class AddGame extends JDialog {
 			cbxHora.setFont(new Font("Consolas", Font.PLAIN, 18));
 			cbxHora.setBounds(403, 224, 225, 30);
 			panelBg.add(cbxHora);
-			
+
 			lblHora = new JLabel("Hora");
 			lblHora.setVerticalAlignment(SwingConstants.BOTTOM);
 			lblHora.setHorizontalAlignment(SwingConstants.LEFT);
@@ -243,12 +276,13 @@ public class AddGame extends JDialog {
 			lblHora.setFont(new Font("Consolas", Font.PLAIN, 20));
 			lblHora.setBounds(403, 188, 225, 31);
 			panelBg.add(lblHora);
-			
+
 			cbxEstadio = new JComboBox();
+			cbxEstadio.setEnabled(false);
 			cbxEstadio.setFont(new Font("Consolas", Font.PLAIN, 18));
 			cbxEstadio.setBounds(55, 303, 225, 30);
 			panelBg.add(cbxEstadio);
-			
+
 			lblEstadio = new JLabel("Estadio");
 			lblEstadio.setVerticalTextPosition(SwingConstants.BOTTOM);
 			lblEstadio.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -258,14 +292,16 @@ public class AddGame extends JDialog {
 			lblEstadio.setBounds(55, 267, 225, 31);
 			panelBg.add(lblEstadio);
 		}
-		
+		myGame =  Lidom.getInstance().searchGame(game.getHomeTeam(), game.getAwayTeam(), game.getStadium(), game.getDate(), game.getHora());
 		loadStadiumsCbx();
 		loadTeamsCbx();
+		loadGameData();
 	}
 
 
 
 	/** Metodos **/
+	@SuppressWarnings("unchecked")
 	private void loadStadiumsCbx() {
 
 		cbxEstadio.removeAllItems();
@@ -273,13 +309,14 @@ public class AddGame extends JDialog {
 		for (Stadium s : Lidom.getInstance().getListStadium()) {
 			cbxEstadio.addItem(s.getName());	
 		}
-		
+
 		cbxEstadio.insertItemAt(new String("<Seleccionar"), 0);
 		cbxEstadio.setSelectedIndex(0);
-		
+
 
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	private void loadTeamsCbx() {
 
 		cbxEquipoLocal.removeAllItems();
@@ -303,5 +340,19 @@ public class AddGame extends JDialog {
 		cbxEquipoLocal.setSelectedIndex(0);
 		cbxEquipoVisitante.setSelectedIndex(0);
 		cbxHora.setSelectedIndex(0);
+	}
+
+	private void loadGameData() {
+
+		if (myGame!=null) {
+
+			cbxEquipoLocal.setSelectedItem(myGame.getHomeTeam());
+			cbxEquipoVisitante.setSelectedItem(myGame.getAwayTeam());
+			cbxEstadio.setSelectedItem(myGame.getStadium());
+
+			//dateChooser.setFormatoFecha(myGame.getDate());
+
+
+		}
 	}
 }

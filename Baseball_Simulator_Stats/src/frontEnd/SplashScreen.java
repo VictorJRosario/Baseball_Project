@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
+@SuppressWarnings("unused")
 public class SplashScreen extends JFrame {
 
 	/**

@@ -57,8 +57,14 @@ import backEnd.Stadium;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+@SuppressWarnings("unused")
 public class AddStadium extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1911963290644969201L;
+	
 	private final JPanel contentPanel = new JPanel();
 	private JSeparator separator;
 	private JLabel lblRegistroEquipo;
@@ -138,6 +144,11 @@ public class AddStadium extends JDialog {
 
 			txtDireccion = new JTextField()  {
 
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -3833972486081286599L;
+				
 				/************* PARA REDONDEAR JTEXTFIELD *************/
 				@Override 
 				protected void paintComponent(Graphics g) {
@@ -238,6 +249,11 @@ public class AddStadium extends JDialog {
 			panelBg.add(lblNmeroUniforme);
 
 			txtName = new JTextField() {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 8194889294007204360L;
+				
 				/************* PARA REDONDEAR JTEXTFIELD *************/
 				@Override 
 				protected void paintComponent(Graphics g) {
